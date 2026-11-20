@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#1f2a55" />
+<title>《思想道德与法治》实践教学选题投票</title>
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<div class="bg-deco" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">思</span>
+    <div class="brand-text">
+      <h1>实践教学 · 选题投票</h1>
+      <p>《思想道德与法治》课程 2026 年实践教学方案</p>
+    </div>
+  </div>
+  <button class="link-btn" id="adminBtn" type="button" title="管理入口">⚙ 管理</button>
+</header>
+
+<div class="counter-wrap">
+  <section class="counter" aria-label="投票配额">
+    <div class="counter-main">
+      <div class="seats-label">已投票 / 总名额</div>
+      <div class="seats"><span id="used" class="used">0</span><span class="slash">/</span><span id="limit" class="limit">14</span></div>
+    </div>
+    <div class="seats-track"><div class="seats-fill" id="seatsFill"></div></div>
+    <div class="counter-side">
+      <span id="remaining">剩余 14 票</span>
+      <span id="lockBadge" class="badge" hidden>投票已截止</span>
+    </div>
+  </section>
+</div>
+
+<main>
+  <div class="toolbar">
+    <p class="hint">每人限投 <b>1 票</b>，从下列 10 个主题中选一个作为本组选题；全组共 <b>14</b> 票，投满即自动锁定结果。</p>
+    <button class="ghost-btn" id="resultBtn" type="button">查看 / 隐藏得票</button>
+  </div>
+
+  <section id="voteView" class="vote-view">
+    <div id="topics" class="grid"></div>
+  </section>
+
+  <section id="doneView" class="card done" hidden>
+    <div class="big-icon">✓</div>
+    <div id="resultText" class="result-text"></div>
+    <div class="done-actions">
+      <button class="primary-btn" id="changeBtn" type="button">修改我的选择</button>
+      <button class="ghost-btn" id="peekBtn" type="button">看得票情况</button>
+    </div>
+    <p class="muted" id="changeNote"></p>
+  </section>
+
+  <section id="footerTips" class="tips">
+    <p><b>使用提示：</b>每位同学用自己的手机打开上方“手机访问”链接投票；投满 14 票后系统自动锁定结果。数据保存在主持人电脑上，刷新页面即可看到最新票数。</p>
+  </section>
+
+  <section id="closeView" class="card close-view" hidden>
+    <div class="big-icon lock">🔒</div>
+    <div id="closeText" class="result-text"></div>
+    <button class="ghost-btn" id="closePeek" type="button">看得票情况</button>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>数据实时同步 · 刷新页面即可看到最新票数</span>
+</footer>
+
+<!-- 确认提交 -->
+<div class="modal" id="confirmModal" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <h2 id="confirmTitle">确认提交？</h2>
+    <p class="muted">提交后计入全组 14 票名额，名额未满前可修改。</p>
+    <div id="confirmTopic" class="confirm-topic"></div>
+    <div class="modal-actions">
+      <button class="ghost-btn" id="confirmCancel" type="button">取消</button>
+      <button class="primary-btn" id="confirmOk" type="button">确认投票</button>
+    </div>
+  </div>
+</div>
+
+<!-- 管理面板 -->
+<div class="modal" id="adminModal" hidden>
+  <div class="modal-card wide" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
+    <h2 id="adminTitle">管理面板</h2>
+    <div id="adminAuthed" hidden>
+      <div class="admin-stats" id="adminStats"></div>
+      <ul class="vote-log" id="voteLog"></ul>
+      <div class="admin-toggles">
+        <label class="switch">
+          <input type="checkbox" id="hideResultsChk" />
+          <span>投票期间隐藏实时票数（避免从众；结果在投满或管理员开启后显示）</span>
+        </label>
+      </div>
+      <div class="modal-actions spread">
+        <div class="row-gap">
+          <button class="ghost-btn" id="closeBtn" type="button" title="投满 14 票会自动截止">立即截止投票</button>
+          <button class="danger-btn" id="resetBtn" type="button">清空全部投票（重新开始）</button>
+        </div>
+        <button class="ghost-btn" id="adminClose" type="button">关闭</button>
+      </div>
+      <p class="muted small">清空 / 截止操作不可撤销；清空会要求输入“清空”确认。</p>
+    </div>
+    <div id="adminLogin">
+      <p class="muted">输入管理密码（默认在启动时打印的终端窗口里）。</p>
+      <form id="adminForm" class="admin-form">
+        <input id="adminPwd" type="password" placeholder="管理密码" autocomplete="current-password" required />
+        <button class="primary-btn" type="submit">进入</button>
+      </form>
+      <div class="modal-actions">
+        <button class="ghost-btn" id="adminCancel" type="button">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="/app.js"></script>
+</body>
+</html>

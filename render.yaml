@@ -1,0 +1,26 @@
+# Render Blueprint：一个 Web 服务 + 一个 Key Value（Redis 兼容）存储
+# 免费层 Web 实例空闲 15 分钟会休眠，临时文件在重启后清空，
+# 所以票数放在 Key Value 里，避免两次投票间隔太久导致票数丢失。
+services:
+  - type: web
+    name: szd-topic-vote
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm install --omit=dev
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    # 只写一项：票数存进 Key Value。其余设置（名额 14、管理密码）用默认值 / 平台随机值
+    envVars:
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: szd-vote-kv
+          property: connectionString
+
+  - type: keyvalue
+    name: szd-vote-kv
+    plan: free
+    region: singapore
+    maxmemoryPolicy: noeviction   # 选票不能丢，内存满时拒绝写入而不是淘汰键
+    ipAllowList: []               # 只允许 Render 内网访问
